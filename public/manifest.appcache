@@ -1,0 +1,19 @@
+CACHE MANIFEST
+      
+# 30/10/2011 19:18
+
+CACHE:
+css/base.css
+css/enhanced.css
+js/view.js
+js/blackjack.js
+js/storage-polyfill.js
+img/mobile-cards.png
+
+http://html5shim.googlecode.com/svn/trunk/html5.js
+
+FALLBACK:
+/wk7/ offline.html
+
+NETWORK:
+*

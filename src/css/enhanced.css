@@ -1,0 +1,44 @@
+@charset "utf-8";
+/* CSS Document */
+@media all and (min-width: 600px) 
+{
+	#player:before {
+		content: "Player ";
+	}
+
+	#bank:after {
+		content: " Dealer";
+	}
+	
+	#table {
+	  width: 100%;
+	  clear: left;
+	}
+	
+	#gamezone {
+		text-align: left;
+	}
+	
+	section {
+		display: block; 
+		width: 100%;
+	}
+
+	.card + .card {
+		margin-left: 5px;
+	}
+	
+	#btnHide {
+		background-color: LightGray;
+		color: #333 !important;
+		display: inline;
+	}
+
+	#localstoragebuttons input {
+		width: 30%;
+	}
+	#container {
+		max-width: 800px;
+		margin: 0 auto;
+	}
+}
