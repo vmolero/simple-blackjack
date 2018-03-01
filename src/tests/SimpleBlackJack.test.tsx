@@ -1,6 +1,6 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-import SimpleBlackJack from './SimpleBlackJack';
+import SimpleBlackJack from '../../src/SimpleBlackJack';
 
 it('renders without crashing', () => {
   const div = document.createElement('div');

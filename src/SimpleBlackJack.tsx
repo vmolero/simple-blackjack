@@ -1,5 +1,5 @@
 import * as React from 'react';
-import Card from './components/Card';
+import CardComponent from './components/CardComponent';
 
 class SimpleBlackJack extends React.Component {
   render() {
@@ -34,7 +34,7 @@ class SimpleBlackJack extends React.Component {
                 <legend>Your cards</legend>
                   <div className="desk" id="playertable">
                     <div className="card no-background" id="playeremptycard" />
-                    <Card name="Ace" suite="Hearts" x="0" y="0" />
+                    <CardComponent value="11" suit="4" />
                   </div>
               </fieldset>
             </section>
@@ -43,7 +43,7 @@ class SimpleBlackJack extends React.Component {
                 <legend>Dealer</legend>
                   <div className="desk" id="banktable">
                     <div className="card no-background" id="bankemptycard" />
-                    <Card name="Ace" suite="Spades" x="0" y="0" />
+                    <CardComponent value="13" suit="1" />
                   </div>
               </fieldset>
             </section>
