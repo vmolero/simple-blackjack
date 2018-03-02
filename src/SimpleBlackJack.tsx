@@ -1,5 +1,5 @@
 import * as React from 'react';
-import CardComponent from './components/CardComponent';
+import BoardComponent from './components/BoardComponent';
 
 class SimpleBlackJack extends React.Component {
   render() {
@@ -27,28 +27,7 @@ class SimpleBlackJack extends React.Component {
             <input type="button" id="btnStand" value="Stand" />
             <span id="bankamount"> <span id="bank">0</span></span>
         </div>
-        <div id="table">
-          <div id="gamezone">
-            <section id="playerside">
-              <fieldset id="playerfieldset">
-                <legend>Your cards</legend>
-                  <div className="desk" id="playertable">
-                    <div className="card no-background" id="playeremptycard" />
-                    <CardComponent value="11" suit="4" />
-                  </div>
-              </fieldset>
-            </section>
-            <section id="bankside">
-              <fieldset id="bankfieldset">
-                <legend>Dealer</legend>
-                  <div className="desk" id="banktable">
-                    <div className="card no-background" id="bankemptycard" />
-                    <CardComponent value="13" suit="1" />
-                  </div>
-              </fieldset>
-            </section>
-          </div>
-        </div>
+        <BoardComponent />
         <footer id="footer">
           <div id="gameinfo">
             <p id="txtMessage">
