@@ -6,6 +6,10 @@ export default class Hand {
         this.cards = Array<Card>();
     }
 
+    public isEmpty(): boolean {
+        return this.cards.length === 0;
+    }
+
     public add(card: Card) {
         this.cards.push(card);
     }
