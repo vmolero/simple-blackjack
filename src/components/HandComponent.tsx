@@ -29,7 +29,7 @@ export default class HandComponent extends React.Component<HandPropsInterface> {
 
   public renderCard(card: Card): JSX.Element {
     return (
-      <div><CardComponent rank={card.getRank()} suit={card.getSuit()} /></div>
+      <CardComponent card={card} />
      );
   }
   

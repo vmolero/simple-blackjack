@@ -2,8 +2,10 @@ import Card from './Card';
 
 export default class Hand {
     private cards: Array<Card>;
-    public constructor() {
-        this.cards = Array<Card>();
+    
+    public constructor();
+    public constructor(cards?: Array<Card>) {
+        this.cards = cards || new Array<Card>();
     }
 
     public add(card: Card) {
@@ -15,6 +17,9 @@ export default class Hand {
     }
     
     public getScore(): number {
+        if (this.cards.length === 0) {
+            return 0;
+        }
         let arrayPossibleScores: Array<number> = this.calculateRecursively(this.cards);
         return this.bestHand(arrayPossibleScores);
     }

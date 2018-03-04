@@ -3,8 +3,8 @@ import Suit from './Suit';
 export default class Card {
     readonly MIN_RANK = 1;
     readonly MAX_RANK = 13;
-    private rank: number;
-    private suit: Suit;
+    private readonly rank: number;
+    private readonly suit: Suit;
     
     constructor(rank: number, suit: Suit) {
         if (typeof(Suit[suit]) !== 'string') {

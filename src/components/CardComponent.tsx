@@ -1,10 +1,8 @@
 import * as React from 'react';
 import Card from './../Card';
-import Suit from './../Suit';
 
 interface CardPropsInterface {
-  rank: number;
-  suit: Suit;
+  card: Card;
 }
 
 export default class CardComponent extends React.Component<CardPropsInterface> {
@@ -13,12 +11,6 @@ export default class CardComponent extends React.Component<CardPropsInterface> {
   private id: string;
   private card: Card;
   
-  constructor(props: CardPropsInterface) {
-    super(props);
-    this.card = new Card(props.rank, props.suit);
-    this.id = this.card.getFullName();
-  }
-
   getBackgroundPositionX(column: number) {
     return  -1 * (column - 1) * this.CARD_WIDTH;
   }
@@ -28,6 +20,8 @@ export default class CardComponent extends React.Component<CardPropsInterface> {
   }
 
   render() {
+    this.card = this.props.card;
+    this.id = this.card.getFullName();
     let background = {
       backgroundImage: `url('../img/mobile-cards.png')`,
       backgroundPositionX: this.getBackgroundPositionX(this.card.getRank()),

@@ -1,26 +1,52 @@
 import Hand from './Hand';
-import Card from 'Card';
+import Card from './Card';
+import CardDeck from './CardDeck';
+import House from './House';
+import Player from './Player';
 
 export default class Deal {
-    private readonly PLAYER: number = 1;
-    private readonly HOUSE: number = 0;
+    public readonly SCORE_THRESHOLD: number = 21;
 
     // private cardCount: number = 0;
     private dealOver: boolean = false;
-    private hands: Array<Hand>;
+    private house: House;
+    private players: Array<Player>;
+    private cardDeck: CardDeck;
 
-    public constructor() {
-        this.hands = new Array<Hand>();
-        this.hands[this.PLAYER] = new Hand();
-        this.hands[this.HOUSE] = new Hand();
+    public constructor(cardDeck?: CardDeck) {
+        this.cardDeck = cardDeck || CardDeck.createStandard52CardDeck();
+        this.house = new House();
+        this.players = new Array<Player>();
+        this.cardDeck.shuffle();
+    }
+
+    public setHouse(house: House): Deal {
+        this.house = house;
+
+        return this;
+    }
+
+    public getHouse(): House {
+        return this.house;
+    }
+
+    public addPlayer(player: Player) {
+        this.players.push(player);
+    }
+
+    public getPlayer(order: number): Player {
+        if (this.players[order - 1] !== undefined) {
+            return this.players[order - 1];
+        }
+        throw new Error('Player not found');
     }
 
     public getPlayerHand(): Hand {
-        return this.hands[this.PLAYER];
+        return this.getPlayer(1).getHand();
     }
 
     public getHouseHand(): Hand {
-        return this.hands[this.HOUSE];
+        return this.house.getHand();
     }
 
     public getPlayerScore(): number {
@@ -28,15 +54,26 @@ export default class Deal {
     }
 
     public getHouseScore(): number {
-        return this.getHouseHand().getScore();
+        return this.house.getScore();
     }
 
-    public pullPlayerCard(card: Card) {
-        this.getPlayerHand().add(card);
+    public pullPlayerCard() {
+        try {
+            let card: Card = this.cardDeck.popCard();
+            this.getPlayer(1).pullCard(card);
+        } catch (doNothingOnEmptyDeck) {
+            this.dealOver = true;
+        }
     }
 
-    public pullHouseCard(card: Card) {
-        this.getHouseHand().add(card);
+    public pullHouseCard() {
+        try {
+            let card: Card = this.cardDeck.popCard();
+            this.getHouseHand().add(card);
+            
+        } catch (doNothingOnEmptyDeck) {
+            this.dealOver = true;
+        }
     }
 
     public setDealOver() {

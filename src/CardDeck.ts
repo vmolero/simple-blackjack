@@ -5,9 +5,16 @@ export default class CardDeck {
     public readonly RANKS = 13;
     private deck: Array<Card>;
 
-    public constructor() {
-        this.deck = new Array<Card>();
-        this.fill();
+    public static createStandard52CardDeck() {
+        let deck: Array<Card> = new Array<Card>();
+        for (let suit: Suit = Suit.Clubs; suit <= Suit.Diamonds; suit++) {
+            for (let rank: number = 1; rank <= 13; rank++) {
+                const card = new Card(rank, suit);
+                deck.push(card);
+            }
+        }
+
+        return new CardDeck(deck);
     }
 
     /** 
@@ -38,12 +45,11 @@ export default class CardDeck {
         return card;
     }
 
-    private fill() {
-        for (let suit: Suit = Suit.Clubs; suit <= Suit.Diamonds; suit++) {
-            for (let rank: number = 1; rank <= this.RANKS; rank++) {
-                const card = new Card(rank, suit);
-                this.deck.push(card);
-            }
-        }
+    public pushCard(card: Card) {
+        this.deck.push(card);
+    }
+
+    private constructor(deck: Array<Card>) {
+        this.deck = deck;
     }
 }
