@@ -6,20 +6,20 @@ export default class Hand {
         this.cards = Array<Card>();
     }
 
-    public isEmpty(): boolean {
-        return this.cards.length === 0;
-    }
-
     public add(card: Card) {
         this.cards.push(card);
     }
 
+    public getCards(): Array<Card> {
+        return this.cards;
+    }
+    
     public getScore(): number {
-        let arrayPossibleScores: Array<number> = this.calculateRec(this.cards);
+        let arrayPossibleScores: Array<number> = this.calculateRecursively(this.cards);
         return this.bestHand(arrayPossibleScores);
     }
 
-    private calculateRec(hand: Array<Card>): Array<number> {
+    private calculateRecursively(hand: Array<Card>): Array<number> {
         if (hand.length === 0) {
             return [0];
         }
@@ -33,7 +33,7 @@ export default class Hand {
         
         for (let i: number = 0; i < firstCardScore.length; i++) {
             let score: number = firstCardScore[i];
-            let accumulated: Array<number> = this.arrayAdd(score, this.calculateRec(handrec));
+            let accumulated: Array<number> = this.arrayAdd(score, this.calculateRecursively(handrec));
             handScore = handScore.concat(accumulated);
         }
         return handScore;

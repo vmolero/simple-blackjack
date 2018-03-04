@@ -1,43 +1,40 @@
 import * as React from 'react';
-import CardComponent from './CardComponent';
+import DealComponent from './DealComponent';
 import Board from '../Board';
-import Card from '../Card';
-import Suit from '../Suit';
 
-export default class BoardComponent extends React.Component {
-  private board: Board;
-  constructor(props: string[]) {
+export default class BoardComponent extends React.Component<{}, Board> {
+  
+  constructor(props: {}) {
     super(props);
-    this.board = new Board();
-    this.board.addCard(new Card(1, Suit.Hearts));
-    this.board.addCard(new Card(11, Suit.Hearts));
-    this.board.getHandScore(); 
+    this.state = new Board();
+  }
+
+  public handleDealClick() {
+    alert('jelou');
+    this.state.newDeal();
   }
 
   public render() {
     return (
-        <div id="table">
-          <div id="gamezone">
-            <section id="playerside">
-              <fieldset id="playerfieldset">
-                <legend>Your cards</legend>
-                  <div className="desk" id="playertable">
-                    <div className="card no-background" id="playeremptycard" />
-                    <CardComponent rank="11" suit="4" />
-                  </div>
-              </fieldset>
-            </section>
-            <section id="bankside">
-              <fieldset id="bankfieldset">
-                <legend>Dealer</legend>
-                  <div className="desk" id="banktable">
-                    <div className="card no-background" id="bankemptycard" />
-                    <CardComponent rank="13" suit="1" />
-                  </div>
-              </fieldset>
-            </section>
+      <div id="table">
+        <aside id="subheader">
+          <div id="localstoragebuttons">
+            <input type="button" id="btnSave" value="Save globals" />
+            <input type="button" id="btnReset" value="Reset Counters" />
           </div>
-        </div>
+          <div id="globalinfopanel">
+            <p>
+              <span id="globalhand">Hand: <span id="dealnumber">{this.state.getDealCount()}</span></span> 
+              <br />
+              <span id="globalscores"> You <span id="playerscore">
+                {this.state.getPlayerWins()}</span> :: <span id="bankscore">
+                {this.state.getHouseWins()}
+              </span> House</span>
+            </p>
+          </div>
+        </aside>
+        <DealComponent deal={this.state.getDeal()} onClick={() => this.handleDealClick()} />        
+      </div>
       );
     }
 }

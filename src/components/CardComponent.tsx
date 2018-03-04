@@ -1,23 +1,21 @@
 import * as React from 'react';
 import Card from './../Card';
+import Suit from './../Suit';
 
 interface CardPropsInterface {
-  rank: string;
-  suit: string;
+  rank: number;
+  suit: Suit;
 }
 
 export default class CardComponent extends React.Component<CardPropsInterface> {
-  readonly CARD_WIDTH: number = 60;
-  readonly CARD_HEIGHT: number = 80;
+  private readonly CARD_WIDTH: number = 60;
+  private readonly CARD_HEIGHT: number = 80;
   private id: string;
   private card: Card;
   
   constructor(props: CardPropsInterface) {
     super(props);
-    this.card = new Card(
-      parseInt(props.rank, 10), 
-      parseInt(props.suit, 10)
-    );
+    this.card = new Card(props.rank, props.suit);
     this.id = this.card.getFullName();
   }
 

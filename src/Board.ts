@@ -1,21 +1,38 @@
-import Hand from './Hand';
-import Card from './Card';
 import CardDeck from './CardDeck';
+import Deal from './Deal';
 
 export default class Board {
-    private hand: Hand;
-    private deck: CardDeck;
-    
-    constructor() {
-        this.hand = new Hand();
-        this.deck = new CardDeck();
-        this.deck.shuffle();
+    private deal: Deal;
+    private cardDeck: CardDeck;
+    private dealCount: number = 0;
+    private playerWins: number = 0;
+    private houseWins: number = 0;
+
+    public constructor() {
+        this.newDeal();
     }
 
-    public addCard(card: Card) {
-        this.hand.add(card);
+    public newDeal() {
+        this.deal = new Deal();
+        this.cardDeck = new CardDeck();
+        this.cardDeck.shuffle();
+        this.deal.pullPlayerCard(this.cardDeck.popCard());
+        this.deal.pullHouseCard(this.cardDeck.popCard());
     }
-    public getHandScore() {
-        return this.hand.getScore();
+
+    public getDeal(): Deal {
+        return this.deal;
+    }
+
+    public getDealCount(): number {
+        return this.dealCount;
+    }
+
+    public getPlayerWins(): number {
+        return this.playerWins;
+    }
+
+    public getHouseWins(): number {
+        return this.houseWins;
     }
 }
