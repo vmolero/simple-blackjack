@@ -10,7 +10,6 @@ export default class BoardComponent extends React.Component<{}, Board> {
   }
 
   public handleDealClick() {
-    alert('jelou');
     this.state.newDeal();
   }
 
