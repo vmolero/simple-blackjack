@@ -13,8 +13,7 @@ export default class Board {
     }
 
     public firstDeal() {
-        this.deal.pullPlayerCard();
-        this.deal.pullHouseCard();
+        this.deal.start();
     }
 
     public addPlayer(player: Player) {
@@ -22,25 +21,11 @@ export default class Board {
     }
 
     public giveCardToPlayer() {
-        if (!this.deal.isDealOver()) {
-            this.deal.pullPlayerCard();
-            if (this.deal.getPlayerScore() > this.deal.SCORE_THRESHOLD) {
-                this.deal.setDealOver();
-            }
-        }
+        this.deal.dealPlayer();
     }
 
     public giveCardToHouse() {
-        if (this.deal.getHouseScore() >= this.deal.getPlayerScore()) {
-            this.deal.setDealOver();
-        }
-        if (!this.deal.isDealOver()) {
-            this.deal.pullHouseCard();
-            if (this.deal.getHouseScore() >= this.deal.SCORE_THRESHOLD ||
-                (this.deal.getHouseScore() >= this.deal.getPlayerScore())) {
-                this.deal.setDealOver();
-            }
-        }
+        this.deal.dealHouse();
     }
 
     public isHouseWinning() {

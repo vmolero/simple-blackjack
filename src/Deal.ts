@@ -18,6 +18,13 @@ export default class Deal {
         this.house = new House();
         this.players = new Array<Player>();
         this.cardDeck.shuffle();
+        this.dealOver = false;
+    }
+
+    public start() {
+        this.setDealOn();
+        this.pullPlayerCard();
+        this.pullHouseCard();
     }
 
     public setHouse(house: House): Deal {
@@ -80,7 +87,33 @@ export default class Deal {
         this.dealOver = true;
     }
 
+    public setDealOn() {
+        this.dealOver = false;
+    }
+
     public isDealOver(): boolean {
         return this.dealOver;
+    }
+
+    public dealHouse() {
+        if (this.getHouseScore() >= this.getPlayerScore()) {
+            this.setDealOver();
+        }
+        if (!this.isDealOver()) {
+            this.pullHouseCard();
+            if (this.getHouseScore() >= this.SCORE_THRESHOLD ||
+                (this.getHouseScore() >= this.getPlayerScore())) {
+                this.setDealOver();
+            }
+        }
+    }
+
+    public dealPlayer() {
+        if (!this.isDealOver()) {
+            this.pullPlayerCard();
+            if (this.getPlayerScore() > this.SCORE_THRESHOLD) {
+                this.setDealOver();
+            }
+        }
     }
 }
