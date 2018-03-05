@@ -1,11 +1,12 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-import App from './App';
+import SimpleBlackJack from './SimpleBlackJack';
 import registerServiceWorker from './registerServiceWorker';
-import './index.css';
+import './css/base.css';
+import './css/enhanced.css';
 
 ReactDOM.render(
-  <App />,
+  <SimpleBlackJack />,
   document.getElementById('root') as HTMLElement
 );
 registerServiceWorker();

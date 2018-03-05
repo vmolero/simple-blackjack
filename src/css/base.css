@@ -1,0 +1,202 @@
+* { margin: 0; padding: 0; }
+.invisible {
+	display: none !important;
+	height: 0px !important;
+	overflow: hidden !important;
+	/* visibility: hidden;*/
+}
+
+body {
+	background-color: green;
+	font-family: "Trebuchet MS";
+	color: SandyBrown;
+}
+
+#globalinfopanel {
+	background-color: DarkGreen;
+	text-align: center;
+	color: SandyBrown;
+}
+
+
+
+#globalscores {
+	color: White;
+	font-weight: bold;
+}
+
+#playerscore {
+	font-size: 1.2em;
+	color: Gold;
+}
+
+#bankscore {
+	font-size: 1.2em;
+	color: Gray;
+}
+
+#table {
+	width: 100%;
+}
+
+#gamezone {
+	width: 100%;
+	margin: .5em auto;
+}
+
+fieldset {
+	padding: .3em;
+	border: 1px solid YellowGreen;
+	margin: 0 .2em;
+}
+
+#playerfieldset {
+	color: Gold;
+}
+
+#bankfieldset {
+	color: YellowGreen;
+}
+
+legend {
+  font-size: 0.8em;
+  font-weight: bold;
+  padding: 0 0.2em;
+  text-transform: uppercase;
+}
+
+h1 span {
+	font-size: .7em;
+	color: White;
+}
+
+h1 {
+	color: YellowGreen;
+	text-align: center;
+}
+
+ input[type="button"] {
+	border: 0;
+ }
+
+aside input[type="button"], #gamebuttons input[type="button"] {
+	
+	background: none;
+	height: 4em;
+	width: 25%;
+	font-weight: bolder;
+}
+input[type="button"]:hover {
+	cursor: pointer;
+
+}
+
+#gamebuttons {
+	text-align: center;
+}
+
+aside > div {
+  text-align: center;
+  width: 100%;
+}
+
+
+#btnDealer {
+  background-color: DarkOrange !important;
+  color: BlanchedAlmond;
+}
+
+#btnHit {
+  background-color: Khaki !important;
+  color: DarkOliveGreen;
+}
+
+#btnStand {
+  background-color: YellowGreen !important;
+  color: Olive;
+}
+
+#localstoragebuttons input {
+  color: Wheat;
+  width: 48%;
+  height: 1.3em;
+}
+
+#btnSave {
+  background-color: DimGray;
+  
+}
+
+#btnReset {
+  background-color: Gray;
+}
+
+#btnHide {
+	display: none;
+}
+
+#gameinfo {
+	background-color: BlanchedAlmond;
+	color: DimGray;
+	text-align: center;
+}
+
+#playeramount, #bankamount {
+	font-size: 1.2em;
+}
+
+#playeramount {
+	color: Gold;
+}
+
+#bankamount {
+	color: LightGray;
+}
+
+#player {
+  
+  font-size: 1.4em;
+}
+
+#bank {
+	font-size: 1.4em;
+}
+
+#gamezone {
+	text-align: center;
+}
+
+section {
+	display: inline-block; 
+	width: 45%;
+}
+
+.card {
+	width: 60px;
+	height: 80px;
+	display: inline-block;
+	background-repeat: no-repeat;
+	-moz-border-radius: 5px;
+	border-radius: 5px;
+	
+	-moz-box-shadow: 0 0 5px #555;
+	-webkit-box-shadow: 0 0 5px #555;
+	box-shadow: 0 0 5px #FFF;
+	
+	border: 1px solid #555;
+}
+
+.card + .card {
+	margin-left: -48px;
+}
+
+.no-background {
+	background-position: -999px -999px !important;
+}
+
+
+
+
+
+	
+
