@@ -25,8 +25,7 @@ export default class BoardComponent extends React.Component<{}, BoardStateInterf
   }
 
   public handleDealClick() {
-    let board: Board = new Board();
-    board.addPlayer(new Player());
+    let board: Board = this.state.board;
     board.firstDeal();
     this.setState(
       { 
@@ -83,6 +82,7 @@ export default class BoardComponent extends React.Component<{}, BoardStateInterf
 
   public render() {
     const board: Board = this.state.board; 
+    
     return (
       <div id="table">
         <aside id="subheader">
