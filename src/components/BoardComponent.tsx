@@ -1,88 +1,58 @@
 import * as React from 'react';
 import DealComponent from './DealComponent';
 import Board from '../Board';
-import Player from '../Player';
 
 interface BoardStateInterface {
   board: Board;
   handNumber: number;
   playerScore: number;
   houseScore: number;
+  btnDealerClass: string;
+  btnPlayerClass: string;
 }
 
 export default class BoardComponent extends React.Component<{}, BoardStateInterface> {
   
   constructor(props: {}) {
     super(props);
-    const board: Board = new Board();
-    board.addPlayer(new Player());
     this.state = {
-      board: board,
+      board: Board.newGame(),
       handNumber: 0,
       playerScore: 0,
-      houseScore: 0 
+      houseScore: 0,
+      btnDealerClass: '',
+      btnPlayerClass: 'invisible'
     };
   }
 
   public handleDealClick() {
-    let board: Board = new Board();
-    board.addPlayer(new Player());
-    board.firstDeal();
     this.setState(
       { 
-        board: board,
-        handNumber: this.state.handNumber + 1
+        board: this.state.board.newDeal(),
+        handNumber: this.state.handNumber + 1,
+        btnDealerClass: 'invisible',
+        btnPlayerClass: ''
       }
     );
   }
 
   public handleHitClick() {
-    let board: Board = new Board();
-    board = this.state.board;
-    board.giveCardToPlayer();
-    this.setState({ board: board });
-    let playerScore: number = this.state.playerScore;
-    let houseScore: number = this.state.houseScore;
-    if (board.getDeal().isDealOver()) {
-        if (board.isHouseWinning()) {
-          houseScore += 1;
-        } else {
-          playerScore += 1;
-        }
-    }
-    this.setState(
-      { 
-        board: board,
-        houseScore: houseScore,
-        playerScore: playerScore,
-      }
-    );
+    let newState: BoardStateInterface = this.state;
+    newState.board = this.state.board.dealPlayer();
+    this.setNewState(newState);
   }
 
   public handleStandClick() {
-    let board: Board = new Board();
-    board = this.state.board;
-    while (!board.getDeal().isDealOver()) {
-      board.giveCardToHouse();
+    let newState: BoardStateInterface = this.state;
+    let board: Board = this.state.board;
+    while (!board.isGameOver()) {
+      board = board.dealHouse();
     }
-    let playerScore: number = this.state.playerScore;
-    let houseScore: number = this.state.houseScore;
-    if (board.isHouseWinning()) {
-      houseScore += 1;
-    } else {
-      playerScore += 1;
-    }
-    this.setState(
-      { 
-        board: board,
-        houseScore: houseScore,
-        playerScore: playerScore,
-      }
-    );
+    newState.board = board;
+    this.setNewState(newState);
   }
 
   public render() {
-    const board: Board = this.state.board; 
     return (
       <div id="table">
         <aside id="subheader">
@@ -102,12 +72,27 @@ export default class BoardComponent extends React.Component<{}, BoardStateInterf
           </div>
         </aside>
         <DealComponent 
-                       deal={board.getDeal()} 
+                       board={this.state.board}
+                       btnDealerClass={this.state.btnDealerClass}
+                       btnPlayerClass={this.state.btnPlayerClass}
                        onDealClick={() => this.handleDealClick()} 
                        onHitClick={() => this.handleHitClick()} 
                        onStandClick={() => this.handleStandClick()} 
         />        
       </div>
       );
+    }
+
+    private setNewState(newState: BoardStateInterface) {
+      if (newState.board.isGameOver()) {
+        if (newState.board.isHouseWinning()) {
+          newState.houseScore += 1;
+        } else {
+          newState.playerScore += 1;
+        }
+        newState.btnDealerClass = '';
+        newState.btnPlayerClass = 'invisible';
+      }
+      this.setState(newState);
     }
 }

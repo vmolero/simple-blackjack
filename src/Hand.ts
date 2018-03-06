@@ -3,7 +3,6 @@ import Card from './Card';
 export default class Hand {
     private cards: Array<Card>;
     
-    public constructor();
     public constructor(cards?: Array<Card>) {
         this.cards = cards || new Array<Card>();
     }
