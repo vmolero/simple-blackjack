@@ -14,10 +14,8 @@ interface DealPropsInterface {
 export default class DealComponent extends React.Component<DealPropsInterface> {
   public render() {
     let board: Board = this.props.board;
-    let gameOver: string = board.isGameOver() ? 'Deal Over' : 'Deal On';
     return (
       <div id="gamezone">
-          <div>{gameOver}</div> 
           <div id="gamebuttons">
               <span id="playeramount"><span id="player">{board.getPlayerScore()}</span> </span>
               <input 

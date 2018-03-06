@@ -1,5 +1,5 @@
 import * as React from 'react';
-import BoardComponent from './components/BoardComponent';
+import BoardComponent from './BoardComponent';
 
 class SimpleBlackJack extends React.Component {
   render() {
