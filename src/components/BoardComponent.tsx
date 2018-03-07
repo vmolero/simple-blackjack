@@ -11,12 +11,25 @@ interface BoardStateInterface {
   btnPlayerClass: string;
 }
 
-export default class BoardComponent extends React.Component<{}, BoardStateInterface> {
+interface BoardPropsInterface {
+  board: string;
+  onSaveBoardClick: Function;
+}
+
+export default class BoardComponent extends React.Component<BoardPropsInterface, BoardStateInterface> {
   
-  constructor(props: {}) {
+  constructor(props: BoardPropsInterface) {
     super(props);
+    let board: Board = Board.newGame();
+    if (this.props.board.length > 0) {
+      try {
+        board = JSON.parse(this.props.board);
+      } catch (invalidJson) {
+        alert('Cannot parse Board json');
+      }
+    }
     this.state = {
-      board: Board.newGame(),
+      board: board,
       handNumber: 0,
       playerScore: 0,
       houseScore: 0,
@@ -52,12 +65,22 @@ export default class BoardComponent extends React.Component<{}, BoardStateInterf
     this.setNewState(newState);
   }
 
+  public handleSaveBoard() {
+    let jsonBoard: string = JSON.stringify(this.state.board);
+    return this.props.onSaveBoardClick(jsonBoard);
+  }
+
   public render() {
     return (
       <div id="table">
         <aside id="subheader">
           <div id="localstoragebuttons">
-            <input type="button" id="btnSave" value="Save globals" />
+            <input 
+                    type="button" 
+                    id="btnSave" 
+                    value="Save globals" 
+                    onClick={() => this.handleSaveBoard()} 
+            />
             <input type="button" id="btnReset" value="Reset Counters" />
           </div>
           <div id="globalinfopanel">
