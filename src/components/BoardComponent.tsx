@@ -2,7 +2,7 @@ import * as React from 'react';
 import DealComponent from './DealComponent';
 import Board from '../Board';
 
-interface BoardStateInterface {
+export interface BoardStateInterface {
   board: Board;
   handNumber: number;
   playerScore: number;
@@ -12,24 +12,47 @@ interface BoardStateInterface {
 }
 
 interface BoardPropsInterface {
-  board: string;
+  jsonState: JsonStateInterface;
   onSaveBoardClick: Function;
 }
 
-export default class BoardComponent extends React.Component<BoardPropsInterface, BoardStateInterface> {
+export interface JsonStateInterface {
+  handNumber: number;
+  playerScore: number;
+  houseScore: number;
+}
+
+export class BoardComponent extends React.Component<BoardPropsInterface, BoardStateInterface> {
   
   constructor(props: BoardPropsInterface) {
     super(props);
-    let board: Board = Board.newGame();
-    if (this.props.board.length > 0) {
+    this.state = this.resetState();
+    if (Object.keys(this.props.jsonState).length > 0 && 
+       this.props.jsonState.constructor === Object) {
       try {
-        board = JSON.parse(this.props.board);
+        this.state = this.fromSavedState(this.props.jsonState);
       } catch (invalidJson) {
         alert('Cannot parse Board json');
       }
     }
-    this.state = {
-      board: board,
+  }
+
+  public fromSavedState(stateObject: JsonStateInterface): BoardStateInterface {
+    let state: BoardStateInterface = {
+      board: Board.newGame(),
+      handNumber: stateObject.handNumber,
+      playerScore: stateObject.playerScore,
+      houseScore: stateObject.houseScore,
+      btnDealerClass: '',
+      btnPlayerClass: 'invisible'
+    };
+
+    return state;
+  }
+
+  public resetState(): BoardStateInterface {
+    return {
+      board: Board.newGame(),
       handNumber: 0,
       playerScore: 0,
       houseScore: 0,
@@ -66,8 +89,7 @@ export default class BoardComponent extends React.Component<BoardPropsInterface,
   }
 
   public handleSaveBoard() {
-    let jsonBoard: string = JSON.stringify(this.state.board);
-    return this.props.onSaveBoardClick(jsonBoard);
+    return this.props.onSaveBoardClick(this.state);
   }
 
   public render() {

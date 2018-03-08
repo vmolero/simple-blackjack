@@ -1,22 +1,41 @@
 import * as React from 'react';
-import BoardComponent from './BoardComponent';
+import { BoardComponent, BoardStateInterface, JsonStateInterface } from './BoardComponent';
 
 class SimpleBlackJack extends React.Component {
-  private readonly KEY: string = 'board';
+  private readonly KEY: string = 'blackjack';
 
   setItem(key: string, data: string) {
     localStorage.setItem(key, data);
   }
-  getItem(key: string): string {
-    const jsonBoard: string | null = localStorage.getItem(key);
-    if (jsonBoard !== null) {
-      return jsonBoard;
+  
+  getItem(key: string): JsonStateInterface {
+    const jsonState: string | null = localStorage.getItem(key);
+    if (jsonState !== null) {
+      return JSON.parse(jsonState);
     }
-    return '';
+    return {
+      handNumber: 0,
+      playerScore: 0,
+      houseScore: 0,
+    };
   }
-  handleSaveBoard(board: string): boolean {
+
+  saveGame(state: BoardStateInterface) {
+    let jsonSate: JsonStateInterface = {
+      handNumber: state.handNumber,
+      playerScore: state.playerScore,
+      houseScore: state.houseScore,
+    };
+    this.setItem(this.KEY, JSON.stringify(jsonSate));
+  }
+
+  loadGame(): JsonStateInterface {
+    return this.getItem(this.KEY);
+  }
+
+  handleSaveBoard(state: BoardStateInterface): boolean {
     try {
-      this.setItem(this.KEY, board);
+      this.saveGame(state);
     } catch (errorOnSave) {
       return false;
     }
@@ -31,8 +50,8 @@ class SimpleBlackJack extends React.Component {
           </h1>
         </header>
         <BoardComponent 
-                        board={this.getItem('board')}  
-                        onSaveBoardClick={(board: string) => this.handleSaveBoard(board)}
+                        jsonState={this.loadGame()}  
+                        onSaveBoardClick={(state: BoardStateInterface) => this.handleSaveBoard(state)}
         />
         <footer id="footer">
           <div id="gameinfo">
