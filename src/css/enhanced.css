@@ -3,11 +3,11 @@
 @media all and (min-width: 600px) 
 {
 	#player:before {
-		content: "Player ";
+		content: "You ";
 	}
 
 	#bank:after {
-		content: " Dealer";
+		content: " House";
 	}
 	
 	#table {

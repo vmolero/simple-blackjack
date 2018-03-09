@@ -5,6 +5,10 @@ export default class CardDeck {
     public readonly RANKS = 13;
     private deck: Array<Card>;
 
+    public get cards(): Array<Card> {
+        return this.deck;
+    }
+
     public static createStandard52CardDeck() {
         let deck: Array<Card> = new Array<Card>();
         for (let suit: Suit = Suit.Clubs; suit <= Suit.Diamonds; suit++) {
@@ -14,7 +18,7 @@ export default class CardDeck {
             }
         }
 
-        return new CardDeck(deck);
+        return this.shuffle(new CardDeck(deck));
     }
 
     /** 
@@ -22,15 +26,15 @@ export default class CardDeck {
      * 
      * @see https://en.wikipedia.org/wiki/Fisher%E2%80%93Yates_shuffle#The_modern_algorithm
      */
-    public shuffle() {
+    public static shuffle(deck: CardDeck) {
         let randomizedDeck: Array<Card> = [];
-        let array: Array<Card> = this.deck.slice();
+        let array: Array<Card> = deck.cards.slice();
         while (array.length !== 0) {
             let rIndex = Math.floor(array.length * Math.random());
             randomizedDeck.push(array[rIndex]);
             array.splice(rIndex, 1);
         }
-        this.deck = randomizedDeck;
+        return new CardDeck(randomizedDeck);
     }
 
     public getLength(): number {

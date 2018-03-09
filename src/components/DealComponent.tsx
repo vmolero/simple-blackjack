@@ -5,7 +5,8 @@ import Board from '../Board';
 interface DealPropsInterface {
   board: Board;
   btnDealerClass: string;
-  btnPlayerClass: string;
+  btnHitClass: string;
+  btnStandClass: string;
   onDealClick: Function;
   onHitClick: Function;
   onStandClick: Function;
@@ -14,10 +15,8 @@ interface DealPropsInterface {
 export default class DealComponent extends React.Component<DealPropsInterface> {
   public render() {
     let board: Board = this.props.board;
-    let gameOver: string = board.isGameOver() ? 'Deal Over' : 'Deal On';
     return (
       <div id="gamezone">
-          <div>{gameOver}</div> 
           <div id="gamebuttons">
               <span id="playeramount"><span id="player">{board.getPlayerScore()}</span> </span>
               <input 
@@ -28,14 +27,14 @@ export default class DealComponent extends React.Component<DealPropsInterface> {
                     onClick={() => this.props.onDealClick()} 
               />
               <input 
-                    className={this.props.btnPlayerClass} 
+                    className={this.props.btnHitClass} 
                     type="button" 
                     id="btnHit" 
                     value="Hit" 
                     onClick={() => this.props.onHitClick()} 
               />
               <input 
-                    className={this.props.btnPlayerClass}
+                    className={this.props.btnStandClass}
                     type="button" 
                     id="btnStand" 
                     value="Stand" 

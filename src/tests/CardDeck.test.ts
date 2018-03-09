@@ -7,15 +7,8 @@ test('A new deck is filled with Cards', () => {
     return expect(deck.getLength()).toBe(13 * 4);
 });
 
-test('A new deck has ordered cards', () => {
-    let deck: CardDeck = CardDeck.createStandard52CardDeck();
-    
-    return expect(areCardsInOrder(deck)).toBeTruthy();
-});
-
 test('A shuffled deck has no ordered cards', () => {
     let deck: CardDeck = CardDeck.createStandard52CardDeck();
-    deck.shuffle();
     
     return expect(areCardsInOrder(deck)).toBeFalsy();
 });

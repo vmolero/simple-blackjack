@@ -6,7 +6,6 @@ export default class Deal {
 
     public constructor(cardDeck?: CardDeck) {
         this.cardDeck = cardDeck || CardDeck.createStandard52CardDeck();
-        this.cardDeck.shuffle();
     }
 
     public pullCard(): Card {

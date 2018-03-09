@@ -2,26 +2,69 @@ import * as React from 'react';
 import DealComponent from './DealComponent';
 import Board from '../Board';
 
-interface BoardStateInterface {
+export interface BoardStateInterface {
   board: Board;
   handNumber: number;
   playerScore: number;
   houseScore: number;
   btnDealerClass: string;
-  btnPlayerClass: string;
+  btnHitClass: string;
+  btnStandClass: string;
+  message: string;
 }
 
-export default class BoardComponent extends React.Component<{}, BoardStateInterface> {
+interface BoardPropsInterface {
+  jsonState: JsonStateInterface;
+  onSaveGameClick: Function;
+  onResetGameClick: Function;
+}
+
+export interface JsonStateInterface {
+  handNumber: number;
+  playerScore: number;
+  houseScore: number;
+}
+
+export class BoardComponent extends React.Component<BoardPropsInterface, BoardStateInterface> {
   
-  constructor(props: {}) {
+  constructor(props: BoardPropsInterface) {
     super(props);
-    this.state = {
+    this.state = this.resetState();
+    if (Object.keys(this.props.jsonState).length > 0 && 
+       this.props.jsonState.constructor === Object) {
+      try {
+        this.state = this.fromSavedState(this.props.jsonState);
+      } catch (invalidJson) {
+        alert('Cannot parse json');
+      }
+    }
+  }
+
+  public fromSavedState(stateObject: JsonStateInterface): BoardStateInterface {
+    let state: BoardStateInterface = {
+      board: Board.newGame(),
+      handNumber: stateObject.handNumber,
+      playerScore: stateObject.playerScore,
+      houseScore: stateObject.houseScore,
+      btnDealerClass: '',
+      btnHitClass: 'invisible',
+      btnStandClass: 'invisible',
+      message: 'Welcome to vmolero\'s BlackJack Game. Press \'Deal!\' to start playing.'
+    };
+
+    return state;
+  }
+
+  public resetState(): BoardStateInterface {
+    return {
       board: Board.newGame(),
       handNumber: 0,
       playerScore: 0,
       houseScore: 0,
       btnDealerClass: '',
-      btnPlayerClass: 'invisible'
+      btnHitClass: 'invisible',
+      btnStandClass: 'invisible',
+      message: 'Welcome to vmolero\'s BlackJack Game. Press \'Deal!\' to start playing.'
     };
   }
 
@@ -31,7 +74,9 @@ export default class BoardComponent extends React.Component<{}, BoardStateInterf
         board: this.state.board.newDeal(),
         handNumber: this.state.handNumber + 1,
         btnDealerClass: 'invisible',
-        btnPlayerClass: ''
+        btnHitClass: '',
+        btnStandClass: '',
+        message: 'Game ON!'
       }
     );
   }
@@ -42,14 +87,32 @@ export default class BoardComponent extends React.Component<{}, BoardStateInterf
     this.setNewState(newState);
   }
 
-  public handleStandClick() {
+  public sleep(ms: number) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+  }
+
+  public async handleStandClick() {
     let newState: BoardStateInterface = this.state;
     let board: Board = this.state.board;
+    newState.btnHitClass = 'invisible';
+    this.setNewState(newState);
     while (!board.isGameOver()) {
       board = board.dealHouse();
+      newState.board = board;
+      this.setNewState(newState);
+      await this.sleep(1000);
     }
-    newState.board = board;
-    this.setNewState(newState);
+  }
+
+  public handleSaveGame() {
+    return this.props.onSaveGameClick(this.state);
+  }
+
+  public handleResetGame() {
+    if (confirm('Are you sure?')) {
+      this.setState(this.resetState());
+      return this.props.onResetGameClick();
+    }
   }
 
   public render() {
@@ -57,8 +120,18 @@ export default class BoardComponent extends React.Component<{}, BoardStateInterf
       <div id="table">
         <aside id="subheader">
           <div id="localstoragebuttons">
-            <input type="button" id="btnSave" value="Save globals" />
-            <input type="button" id="btnReset" value="Reset Counters" />
+            <input 
+                    type="button" 
+                    id="btnSave" 
+                    value="Save globals" 
+                    onClick={() => this.handleSaveGame()} 
+            />
+            <input 
+                    type="button" 
+                    id="btnReset" 
+                    value="Reset Counters"
+                    onClick={() => this.handleResetGame()}
+            />
           </div>
           <div id="globalinfopanel">
             <p>
@@ -74,11 +147,19 @@ export default class BoardComponent extends React.Component<{}, BoardStateInterf
         <DealComponent 
                        board={this.state.board}
                        btnDealerClass={this.state.btnDealerClass}
-                       btnPlayerClass={this.state.btnPlayerClass}
+                       btnHitClass={this.state.btnHitClass}
+                       btnStandClass={this.state.btnStandClass}
                        onDealClick={() => this.handleDealClick()} 
                        onHitClick={() => this.handleHitClick()} 
                        onStandClick={() => this.handleStandClick()} 
-        />        
+        />
+        <footer id="footer">
+          <div id="gameinfo">
+            <p id="txtMessage">
+              {this.state.message}
+            </p>
+          </div>
+        </footer>        
       </div>
       );
     }
@@ -87,11 +168,14 @@ export default class BoardComponent extends React.Component<{}, BoardStateInterf
       if (newState.board.isGameOver()) {
         if (newState.board.isHouseWinning()) {
           newState.houseScore += 1;
+          newState.message = 'Aww, you lose, press \'Deal!\' to play another hand.';
         } else {
           newState.playerScore += 1;
+          newState.message = 'YOU WIN !! Press \'Deal!\' to play another hand.';
         }
         newState.btnDealerClass = '';
-        newState.btnPlayerClass = 'invisible';
+        newState.btnHitClass = 'invisible';
+        newState.btnStandClass = 'invisible';
       }
       this.setState(newState);
     }
