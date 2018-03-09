@@ -33,7 +33,7 @@ class SimpleBlackJack extends React.Component {
     return this.getItem(this.KEY);
   }
 
-  handleSaveBoard(state: BoardStateInterface): boolean {
+  handleSaveGame(state: BoardStateInterface): boolean {
     try {
       this.saveGame(state);
     } catch (errorOnSave) {
@@ -41,6 +41,16 @@ class SimpleBlackJack extends React.Component {
     }
     return true;
   }
+  
+  handleResetGame(): boolean {
+    try {
+      localStorage.clear();
+    } catch (errorOnSave) {
+      return false;
+    }
+    return true;
+  }
+
   render() {
     return (
       <div className="container">
@@ -51,7 +61,8 @@ class SimpleBlackJack extends React.Component {
         </header>
         <BoardComponent 
                         jsonState={this.loadGame()}  
-                        onSaveBoardClick={(state: BoardStateInterface) => this.handleSaveBoard(state)}
+                        onSaveGameClick={(state: BoardStateInterface) => this.handleSaveGame(state)}
+                        onResetGameClick={() => this.handleResetGame()}
         />
         <footer id="footer">
           <div id="gameinfo">

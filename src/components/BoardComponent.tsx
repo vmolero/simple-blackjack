@@ -13,7 +13,8 @@ export interface BoardStateInterface {
 
 interface BoardPropsInterface {
   jsonState: JsonStateInterface;
-  onSaveBoardClick: Function;
+  onSaveGameClick: Function;
+  onResetGameClick: Function;
 }
 
 export interface JsonStateInterface {
@@ -32,7 +33,7 @@ export class BoardComponent extends React.Component<BoardPropsInterface, BoardSt
       try {
         this.state = this.fromSavedState(this.props.jsonState);
       } catch (invalidJson) {
-        alert('Cannot parse Board json');
+        alert('Cannot parse json');
       }
     }
   }
@@ -88,8 +89,13 @@ export class BoardComponent extends React.Component<BoardPropsInterface, BoardSt
     this.setNewState(newState);
   }
 
-  public handleSaveBoard() {
-    return this.props.onSaveBoardClick(this.state);
+  public handleSaveGame() {
+    return this.props.onSaveGameClick(this.state);
+  }
+
+  public handleResetGame() {
+    this.setState(this.resetState());
+    return this.props.onResetGameClick();
   }
 
   public render() {
@@ -101,9 +107,14 @@ export class BoardComponent extends React.Component<BoardPropsInterface, BoardSt
                     type="button" 
                     id="btnSave" 
                     value="Save globals" 
-                    onClick={() => this.handleSaveBoard()} 
+                    onClick={() => this.handleSaveGame()} 
             />
-            <input type="button" id="btnReset" value="Reset Counters" />
+            <input 
+                    type="button" 
+                    id="btnReset" 
+                    value="Reset Counters"
+                    onClick={() => this.handleResetGame()}
+            />
           </div>
           <div id="globalinfopanel">
             <p>
