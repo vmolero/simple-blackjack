@@ -10,6 +10,7 @@ export interface BoardStateInterface {
   btnDealerClass: string;
   btnHitClass: string;
   btnStandClass: string;
+  message: string;
 }
 
 interface BoardPropsInterface {
@@ -47,7 +48,8 @@ export class BoardComponent extends React.Component<BoardPropsInterface, BoardSt
       houseScore: stateObject.houseScore,
       btnDealerClass: '',
       btnHitClass: 'invisible',
-      btnStandClass: 'invisible'
+      btnStandClass: 'invisible',
+      message: 'Welcome to vmolero\'s BlackJack Game. Press \'Deal!\' to start playing.'
     };
 
     return state;
@@ -61,7 +63,8 @@ export class BoardComponent extends React.Component<BoardPropsInterface, BoardSt
       houseScore: 0,
       btnDealerClass: '',
       btnHitClass: 'invisible',
-      btnStandClass: 'invisible'
+      btnStandClass: 'invisible',
+      message: 'Welcome to vmolero\'s BlackJack Game. Press \'Deal!\' to start playing.'
     };
   }
 
@@ -72,7 +75,8 @@ export class BoardComponent extends React.Component<BoardPropsInterface, BoardSt
         handNumber: this.state.handNumber + 1,
         btnDealerClass: 'invisible',
         btnHitClass: '',
-        btnStandClass: ''
+        btnStandClass: '',
+        message: 'Game ON!'
       }
     );
   }
@@ -152,7 +156,7 @@ export class BoardComponent extends React.Component<BoardPropsInterface, BoardSt
         <footer id="footer">
           <div id="gameinfo">
             <p id="txtMessage">
-              Welcome to vmolero's BlackJack Game. Press 'Deal!' to start playing.
+              {this.state.message}
             </p>
           </div>
         </footer>        
@@ -164,8 +168,10 @@ export class BoardComponent extends React.Component<BoardPropsInterface, BoardSt
       if (newState.board.isGameOver()) {
         if (newState.board.isHouseWinning()) {
           newState.houseScore += 1;
+          newState.message = 'Aww, you lose, press \'Deal!\' to play another hand.';
         } else {
           newState.playerScore += 1;
+          newState.message = 'YOU WIN !! Press \'Deal!\' to play another hand.';
         }
         newState.btnDealerClass = '';
         newState.btnHitClass = 'invisible';
