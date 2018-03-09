@@ -8,7 +8,8 @@ export interface BoardStateInterface {
   playerScore: number;
   houseScore: number;
   btnDealerClass: string;
-  btnPlayerClass: string;
+  btnHitClass: string;
+  btnStandClass: string;
 }
 
 interface BoardPropsInterface {
@@ -45,7 +46,8 @@ export class BoardComponent extends React.Component<BoardPropsInterface, BoardSt
       playerScore: stateObject.playerScore,
       houseScore: stateObject.houseScore,
       btnDealerClass: '',
-      btnPlayerClass: 'invisible'
+      btnHitClass: 'invisible',
+      btnStandClass: 'invisible'
     };
 
     return state;
@@ -58,7 +60,8 @@ export class BoardComponent extends React.Component<BoardPropsInterface, BoardSt
       playerScore: 0,
       houseScore: 0,
       btnDealerClass: '',
-      btnPlayerClass: 'invisible'
+      btnHitClass: 'invisible',
+      btnStandClass: 'invisible'
     };
   }
 
@@ -68,7 +71,8 @@ export class BoardComponent extends React.Component<BoardPropsInterface, BoardSt
         board: this.state.board.newDeal(),
         handNumber: this.state.handNumber + 1,
         btnDealerClass: 'invisible',
-        btnPlayerClass: ''
+        btnHitClass: '',
+        btnStandClass: ''
       }
     );
   }
@@ -79,14 +83,21 @@ export class BoardComponent extends React.Component<BoardPropsInterface, BoardSt
     this.setNewState(newState);
   }
 
-  public handleStandClick() {
+  public sleep(ms: number) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+  }
+
+  public async handleStandClick() {
     let newState: BoardStateInterface = this.state;
     let board: Board = this.state.board;
+    newState.btnHitClass = 'invisible';
+    this.setNewState(newState);
     while (!board.isGameOver()) {
       board = board.dealHouse();
+      newState.board = board;
+      this.setNewState(newState);
+      await this.sleep(1000);
     }
-    newState.board = board;
-    this.setNewState(newState);
   }
 
   public handleSaveGame() {
@@ -94,8 +105,10 @@ export class BoardComponent extends React.Component<BoardPropsInterface, BoardSt
   }
 
   public handleResetGame() {
-    this.setState(this.resetState());
-    return this.props.onResetGameClick();
+    if (confirm('Are you sure?')) {
+      this.setState(this.resetState());
+      return this.props.onResetGameClick();
+    }
   }
 
   public render() {
@@ -130,11 +143,19 @@ export class BoardComponent extends React.Component<BoardPropsInterface, BoardSt
         <DealComponent 
                        board={this.state.board}
                        btnDealerClass={this.state.btnDealerClass}
-                       btnPlayerClass={this.state.btnPlayerClass}
+                       btnHitClass={this.state.btnHitClass}
+                       btnStandClass={this.state.btnStandClass}
                        onDealClick={() => this.handleDealClick()} 
                        onHitClick={() => this.handleHitClick()} 
                        onStandClick={() => this.handleStandClick()} 
-        />        
+        />
+        <footer id="footer">
+          <div id="gameinfo">
+            <p id="txtMessage">
+              Welcome to vmolero's BlackJack Game. Press 'Deal!' to start playing.
+            </p>
+          </div>
+        </footer>        
       </div>
       );
     }
@@ -147,7 +168,8 @@ export class BoardComponent extends React.Component<BoardPropsInterface, BoardSt
           newState.playerScore += 1;
         }
         newState.btnDealerClass = '';
-        newState.btnPlayerClass = 'invisible';
+        newState.btnHitClass = 'invisible';
+        newState.btnStandClass = 'invisible';
       }
       this.setState(newState);
     }

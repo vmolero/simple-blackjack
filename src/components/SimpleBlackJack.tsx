@@ -63,14 +63,7 @@ class SimpleBlackJack extends React.Component {
                         jsonState={this.loadGame()}  
                         onSaveGameClick={(state: BoardStateInterface) => this.handleSaveGame(state)}
                         onResetGameClick={() => this.handleResetGame()}
-        />
-        <footer id="footer">
-          <div id="gameinfo">
-            <p id="txtMessage">
-              Welcome to vmolero's BlackJack Game. Press 'Deal!' to start playing.
-            </p>
-          </div>
-        </footer>
+        />      
       </div>
     );
   }
