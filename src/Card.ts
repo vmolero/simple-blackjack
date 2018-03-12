@@ -1,11 +1,32 @@
 import Suit from './Suit';
+import Serializable from './interfaces/Serializable';
 
-export default class Card {
+export interface CardJsonInterface {
+    rank: number;
+    suit: number;
+}
+
+export default class Card implements Serializable {
     readonly MIN_RANK = 1;
     readonly MAX_RANK = 13;
     private readonly rank: number;
     private readonly suit: Suit;
     
+    public static fromJSON(json: CardJsonInterface): Card {
+        return new Card(json.rank, json.suit);
+    }
+
+    public static reviver(key: string, value: CardJsonInterface): Card | CardJsonInterface {
+        return key === '' ? Card.fromJSON(value) : value;
+    }
+
+    public toJSON(): CardJsonInterface {
+        return {
+            rank: this.getRank(),
+            suit: this.getSuit(),
+        };
+    }
+
     constructor(rank: number, suit: Suit) {
         if (typeof(Suit[suit]) !== 'string') {
             throw new Error('Invalid Suit');

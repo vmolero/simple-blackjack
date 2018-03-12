@@ -1,17 +1,24 @@
 import * as React from 'react';
 import { BoardComponent, BoardStateInterface, JsonStateInterface } from './BoardComponent';
 
-class SimpleBlackJack extends React.Component {
+interface SimpleBlackJackPropsInterface {
+  localStorage: Storage | null;
+}
+
+class SimpleBlackJack extends React.Component<SimpleBlackJackPropsInterface> {
   private readonly KEY: string = 'blackjack';
 
   setItem(key: string, data: string) {
-    localStorage.setItem(key, data);
+    this.props.localStorage &&
+    this.props.localStorage.setItem(key, data);
   }
   
   getItem(key: string): JsonStateInterface {
-    const jsonState: string | null = localStorage.getItem(key);
-    if (jsonState !== null) {
-      return JSON.parse(jsonState);
+    if (this.props.localStorage) {
+      const jsonState: string | null = this.props.localStorage.getItem(key);
+      if (jsonState !== null) {
+        return JSON.parse(jsonState);
+      }
     }
     return {
       handNumber: 0,
@@ -44,7 +51,8 @@ class SimpleBlackJack extends React.Component {
   
   handleResetGame(): boolean {
     try {
-      localStorage.clear();
+      this.props.localStorage &&
+      this.props.localStorage.clear();
     } catch (errorOnSave) {
       return false;
     }
