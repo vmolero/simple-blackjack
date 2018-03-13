@@ -12,7 +12,10 @@ export default class Card implements Serializable {
     private readonly rank: number;
     private readonly suit: Suit;
     
-    public static fromJSON(json: CardJsonInterface): Card {
+    public static fromJSON(json: CardJsonInterface | string): Card {
+        if (typeof json === 'string') {
+            return JSON.parse(json, Card.reviver);
+        }
         return new Card(json.rank, json.suit);
     }
 

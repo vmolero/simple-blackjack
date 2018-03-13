@@ -1,9 +1,37 @@
-import Card from './Card';
+import Card, { CardJsonInterface } from './Card';
 import Suit from './Suit';
+import Serializable from './interfaces/Serializable';
 
-export default class CardDeck {
+export interface CardDeckJsonInterface {
+    deck: Array<CardJsonInterface>;
+}
+
+export default class CardDeck implements Serializable {
     public readonly RANKS = 13;
     private deck: Array<Card>;
+
+    public static fromJSON(json: CardDeckJsonInterface | string): CardDeck {
+        if (typeof json === 'string') {
+            return JSON.parse(json, CardDeck.reviver); 
+        }
+        let deck: Array<Card> = new Array<Card>();
+        deck = json.deck.map((card: CardJsonInterface): Card => {
+            return Card.fromJSON(card);
+        });
+        return new CardDeck(deck);
+    }
+
+    public static reviver(key: string, value: CardDeckJsonInterface): CardDeck | CardDeckJsonInterface {
+        return key === '' ? CardDeck.fromJSON(value) : value;
+    }
+
+    public toJSON(): CardDeckJsonInterface {
+        return {
+            deck: this.cards.map((card: Card): CardJsonInterface => { 
+                return card.toJSON();
+            }),
+        };
+    }
 
     public get cards(): Array<Card> {
         return this.deck;
