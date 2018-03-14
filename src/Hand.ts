@@ -1,8 +1,35 @@
-import Card from './Card';
+import Card, { CardJsonInterface } from './Card';
+
+export interface HandJsonInterface {
+    cards: Array<CardJsonInterface>,
+}
 
 export default class Hand {
     private cards: Array<Card>;
     
+    public static fromJSON(json: HandJsonInterface | string): Hand {
+        if (typeof json === 'string') {
+            return JSON.parse(json, Hand.reviver); 
+        }
+        let cards: Array<Card> = new Array<Card>();
+        cards = json.cards.map((card: CardJsonInterface): Card => {
+            return Card.fromJSON(card);
+        });
+        return new Hand(cards);
+    }
+
+    public static reviver(key: string, value: HandJsonInterface): Hand | HandJsonInterface {
+        return key === '' ? Hand.fromJSON(value) : value;
+    }
+
+    public toJSON(): HandJsonInterface {
+        return {
+            cards: this.cards.map((card: Card): CardJsonInterface => { 
+                return card.toJSON();
+            }),
+        };
+    }
+
     public constructor(cards?: Array<Card>) {
         this.cards = cards || new Array<Card>();
     }

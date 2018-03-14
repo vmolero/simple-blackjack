@@ -9,8 +9,9 @@ class SimpleBlackJack extends React.Component<SimpleBlackJackPropsInterface> {
   private readonly KEY: string = 'blackjack';
 
   setItem(key: string, data: string) {
-    this.props.localStorage &&
-    this.props.localStorage.setItem(key, data);
+    if (this.props.localStorage) {
+      this.props.localStorage.setItem(key, data);
+    }
   }
   
   getItem(key: string): JsonStateInterface {
@@ -51,8 +52,9 @@ class SimpleBlackJack extends React.Component<SimpleBlackJackPropsInterface> {
   
   handleResetGame(): boolean {
     try {
-      this.props.localStorage &&
-      this.props.localStorage.clear();
+      if (this.props.localStorage) {
+        this.props.localStorage.clear();
+      }
     } catch (errorOnSave) {
       return false;
     }
