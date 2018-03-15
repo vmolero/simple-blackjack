@@ -48,3 +48,15 @@ test('black jack with 1 Aces and a figure of 10 points', () => {
     hand.add(card2);
     return expect(hand.getScore()).toBe(21);
 });
+
+test('A hand is serialized', () => {
+    let card1: Card = new Card(1, Suit.Hearts);
+    let card2: Card = new Card(12, Suit.Hearts);
+    
+    let hand: Hand = new Hand();
+    hand.add(card1);
+    hand.add(card2);
+    const jsonHand: string = JSON.stringify(hand);
+
+    return expect(JSON.parse(jsonHand, Hand.reviver)).toEqual(hand);
+});

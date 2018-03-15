@@ -1,6 +1,6 @@
 import * as React from 'react';
 import DealComponent from './DealComponent';
-import Board from '../Board';
+import Board, { BoardJsonInterface } from '../Board';
 
 export interface BoardStateInterface {
   board: Board;
@@ -20,9 +20,14 @@ interface BoardPropsInterface {
 }
 
 export interface JsonStateInterface {
+  board: BoardJsonInterface;
   handNumber: number;
   playerScore: number;
   houseScore: number;
+  btnDealerClass: string;
+  btnHitClass: string;
+  btnStandClass: string;
+  message: string;
 }
 
 export class BoardComponent extends React.Component<BoardPropsInterface, BoardStateInterface> {
@@ -42,14 +47,14 @@ export class BoardComponent extends React.Component<BoardPropsInterface, BoardSt
 
   public fromSavedState(stateObject: JsonStateInterface): BoardStateInterface {
     let state: BoardStateInterface = {
-      board: Board.newGame(),
+      board: Board.fromJSON(stateObject.board),
       handNumber: stateObject.handNumber,
       playerScore: stateObject.playerScore,
       houseScore: stateObject.houseScore,
-      btnDealerClass: '',
-      btnHitClass: 'invisible',
-      btnStandClass: 'invisible',
-      message: 'Welcome to vmolero\'s BlackJack Game. Press \'Deal!\' to start playing.'
+      btnDealerClass: stateObject.btnDealerClass,
+      btnHitClass: stateObject.btnHitClass,
+      btnStandClass: stateObject.btnStandClass,
+      message: stateObject.message
     };
 
     return state;

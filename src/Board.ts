@@ -1,19 +1,50 @@
-import Player from './Player';
-import Deal from './Deal';
+import Player, { PlayerJsonInterface } from './Player';
+import Deal, { DealJsonInterface } from './Deal';
 import House from './House';
 import Hand from './Hand';
 import Card from './Card';
 import CardDeck from './CardDeck';
 
+export interface BoardJsonInterface {
+    deal: DealJsonInterface;
+    house: PlayerJsonInterface;
+    player1: PlayerJsonInterface;
+}
+
 export default class Board {
+    private static playerWins: number = 0;
+    private static houseWins: number = 0;
     private readonly SCORE_THRESHOLD: number = 21;
     
     private deal: Deal;
-    private playerWins: number = 0;
-    private houseWins: number = 0;
+    
     private house: House;
     private player1: Player;
     
+    public static get PlayerWins(): number {
+        return this.playerWins;
+    }
+
+    public static get HouseWins(): number {
+        return this.houseWins;
+    }
+
+    public static set PlayerWins(wins: number) {
+        this.playerWins = wins;
+    }
+
+    public static set HouseWins(wins: number) {
+        this.houseWins = wins;
+    }
+
+    public static sumPlayerWins(): number {
+        return ++this.playerWins;
+    }
+
+    public static sumHouseWins(): number {
+        return ++this.houseWins;
+    }
+
     public static newGame(): Board {
         let deal: Deal = new Deal(CardDeck.createStandard52CardDeck());
         let playerHand: Hand = new Hand([]);
@@ -22,6 +53,29 @@ export default class Board {
         let house: House = new House(houseHand);
         
         return new Board(deal, house, player1);
+    }
+
+    public static fromJSON(json: BoardJsonInterface | string): Board {
+        if (typeof json === 'string') {
+            return JSON.parse(json, Board.reviver); 
+        }
+        return new Board(
+            Deal.fromJSON(json.deal), 
+            House.fromJSON(json.house), 
+            Player.fromJSON(json.player1)
+        );
+    }
+
+    public static reviver(key: string, value: BoardJsonInterface): Board | BoardJsonInterface {
+        return key === '' ? Board.fromJSON(value) : value;
+    }
+
+    public toJSON(): BoardJsonInterface {
+        return {
+            deal: this.deal.toJSON(),
+            house: this.house.toJSON(),
+            player1: this.player1.toJSON()
+        };
     }
 
     public newDeal(): Board {
@@ -55,14 +109,6 @@ export default class Board {
 
     public getDeal(): Deal {
         return this.deal;
-    }
-
-    public getPlayerWins(): number {
-        return this.playerWins;
-    }
-
-    public getHouseWins(): number {
-        return this.houseWins;
     }
 
     public getHouse(): House {

@@ -1,30 +1,50 @@
 import * as React from 'react';
 import { BoardComponent, BoardStateInterface, JsonStateInterface } from './BoardComponent';
+import Board from 'Board';
 
-class SimpleBlackJack extends React.Component {
+interface SimpleBlackJackPropsInterface {
+  localStorage: Storage | null;
+}
+
+class SimpleBlackJack extends React.Component<SimpleBlackJackPropsInterface> {
   private readonly KEY: string = 'blackjack';
 
   setItem(key: string, data: string) {
-    localStorage.setItem(key, data);
+    if (this.props.localStorage) {
+      this.props.localStorage.setItem(key, data);
+    }
   }
   
   getItem(key: string): JsonStateInterface {
-    const jsonState: string | null = localStorage.getItem(key);
-    if (jsonState !== null) {
-      return JSON.parse(jsonState);
+    if (this.props.localStorage) {
+      const jsonState: string | null = this.props.localStorage.getItem(key);
+      if (jsonState !== null) {
+        return JSON.parse(jsonState);
+      }
     }
+    
     return {
+      board: Board.newGame().toJSON(),
       handNumber: 0,
       playerScore: 0,
       houseScore: 0,
+      btnDealerClass: '',
+      btnHitClass: 'invisible',
+      btnStandClass: 'invisible',
+      message: 'Welcome to vmolero\'s BlackJack Game. Press \'Deal!\' to start playing.'
     };
   }
 
   saveGame(state: BoardStateInterface) {
     let jsonSate: JsonStateInterface = {
+      board: state.board.toJSON(),
       handNumber: state.handNumber,
       playerScore: state.playerScore,
       houseScore: state.houseScore,
+      btnDealerClass: state.btnDealerClass,
+      btnHitClass: state.btnHitClass,
+      btnStandClass: state.btnStandClass,
+      message: state.message
     };
     this.setItem(this.KEY, JSON.stringify(jsonSate));
   }
@@ -44,7 +64,9 @@ class SimpleBlackJack extends React.Component {
   
   handleResetGame(): boolean {
     try {
-      localStorage.clear();
+      if (this.props.localStorage) {
+        this.props.localStorage.clear();
+      }
     } catch (errorOnSave) {
       return false;
     }
