@@ -1,5 +1,5 @@
-import Deal from "./../Deal";
-import CardDeck from "./../CardDeck";
+import Deal from './../Deal';
+import CardDeck from './../CardDeck';
 
 test('A deal is serialized', () => {
     const deal: Deal = new Deal(CardDeck.createStandard52CardDeck());

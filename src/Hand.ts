@@ -1,7 +1,7 @@
 import Card, { CardJsonInterface } from './Card';
 
 export interface HandJsonInterface {
-    cards: Array<CardJsonInterface>,
+    cards: Array<CardJsonInterface>;
 }
 
 export default class Hand {

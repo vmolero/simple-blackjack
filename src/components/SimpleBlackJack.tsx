@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { BoardComponent, BoardStateInterface, JsonStateInterface } from './BoardComponent';
+import Board from 'Board';
 
 interface SimpleBlackJackPropsInterface {
   localStorage: Storage | null;
@@ -21,7 +22,9 @@ class SimpleBlackJack extends React.Component<SimpleBlackJackPropsInterface> {
         return JSON.parse(jsonState);
       }
     }
+    
     return {
+      board: Board.newGame().toJSON(),
       handNumber: 0,
       playerScore: 0,
       houseScore: 0,
@@ -30,6 +33,7 @@ class SimpleBlackJack extends React.Component<SimpleBlackJackPropsInterface> {
 
   saveGame(state: BoardStateInterface) {
     let jsonSate: JsonStateInterface = {
+      board: state.board.toJSON(),
       handNumber: state.handNumber,
       playerScore: state.playerScore,
       houseScore: state.houseScore,

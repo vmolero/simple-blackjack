@@ -1,8 +1,8 @@
 import Hand, { HandJsonInterface } from './Hand';
 import Card from './Card';
 
-interface PlayerJsonInterface {
-    hand: HandJsonInterface,
+export interface PlayerJsonInterface {
+    hand: HandJsonInterface;
 }
 
 export default class Player {

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import DealComponent from './DealComponent';
-import Board from '../Board';
+import Board, { BoardJsonInterface } from '../Board';
 
 export interface BoardStateInterface {
   board: Board;
@@ -20,6 +20,7 @@ interface BoardPropsInterface {
 }
 
 export interface JsonStateInterface {
+  board: BoardJsonInterface;
   handNumber: number;
   playerScore: number;
   houseScore: number;
@@ -42,7 +43,7 @@ export class BoardComponent extends React.Component<BoardPropsInterface, BoardSt
 
   public fromSavedState(stateObject: JsonStateInterface): BoardStateInterface {
     let state: BoardStateInterface = {
-      board: Board.newGame(),
+      board: Board.fromJSON(stateObject.board),
       handNumber: stateObject.handNumber,
       playerScore: stateObject.playerScore,
       houseScore: stateObject.houseScore,

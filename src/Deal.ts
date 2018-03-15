@@ -2,15 +2,11 @@ import Card from './Card';
 import CardDeck, { CardDeckJsonInterface } from './CardDeck';
 
 export interface DealJsonInterface {
-    cardDeck: CardDeckJsonInterface
+    cardDeck: CardDeckJsonInterface;
 }
 
 export default class Deal {
     private cardDeck: CardDeck;
-
-    public constructor(cardDeck?: CardDeck) {
-        this.cardDeck = cardDeck || CardDeck.createStandard52CardDeck();
-    }
 
     public static fromJSON(json: DealJsonInterface | string): Deal {
         if (typeof json === 'string') {
@@ -27,6 +23,10 @@ export default class Deal {
         return {
             cardDeck: this.cardDeck.toJSON(),
         };
+    }
+
+    public constructor(cardDeck?: CardDeck) {
+        this.cardDeck = cardDeck || CardDeck.createStandard52CardDeck();
     }
 
     public pullCard(): Card {
