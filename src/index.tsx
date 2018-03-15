@@ -6,7 +6,7 @@ import './css/base.css';
 import './css/enhanced.css';
 
 ReactDOM.render(
-  <SimpleBlackJack />,
+  <SimpleBlackJack localStorage={window.localStorage || null} />,
   document.getElementById('root') as HTMLElement
 );
 registerServiceWorker();

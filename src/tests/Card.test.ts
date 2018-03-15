@@ -1,5 +1,5 @@
-import Card from './../Card';
 import Suit from './../Suit';
+import Card from './../Card';
 
 test('can create a card', () => {
     let card: Card = new Card(1, Suit.Hearts);
@@ -52,4 +52,26 @@ test('Rank is not valid lt MIN', () => {
     return expect(() => {
         return new Card(0, Suit.Hearts);
     }).toThrow('Invalid Rank');
+});
+
+test('Serialize Card', () => {
+    let card: Card = new Card(1, Suit.Spades);
+    // card.toJSON();
+    return expect(JSON.stringify(card)).toEqual(
+        JSON.stringify({
+            rank: 1,
+            suit: 2
+        })
+    );
+});
+
+test('Deserialize Card', () => {
+    let card: string = JSON.stringify({
+        rank: 1,
+        suit: 2
+    });
+    // card.toJSON();
+    return expect(JSON.parse(card, Card.reviver)).toEqual(
+        new Card(1, Suit.Spades)
+    );
 });

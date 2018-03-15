@@ -13,6 +13,12 @@ test('A shuffled deck has no ordered cards', () => {
     return expect(areCardsInOrder(deck)).toBeFalsy();
 });
 
+test('A deck is serialized', () => {
+    const deck: CardDeck = CardDeck.createStandard52CardDeck();
+    const jsonDeck: string = JSON.stringify(deck);
+    return expect(JSON.parse(jsonDeck, CardDeck.reviver)).toEqual(deck);
+});
+
 function areCardsInOrder(deck: CardDeck): boolean {
     let inOrder: boolean = true;
     for (let suit: Suit = Suit.Diamonds; suit >= Suit.Clubs && inOrder; suit--) {
