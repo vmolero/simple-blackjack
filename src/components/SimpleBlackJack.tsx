@@ -28,6 +28,10 @@ class SimpleBlackJack extends React.Component<SimpleBlackJackPropsInterface> {
       handNumber: 0,
       playerScore: 0,
       houseScore: 0,
+      btnDealerClass: '',
+      btnHitClass: 'invisible',
+      btnStandClass: 'invisible',
+      message: 'Welcome to vmolero\'s BlackJack Game. Press \'Deal!\' to start playing.'
     };
   }
 
@@ -37,6 +41,10 @@ class SimpleBlackJack extends React.Component<SimpleBlackJackPropsInterface> {
       handNumber: state.handNumber,
       playerScore: state.playerScore,
       houseScore: state.houseScore,
+      btnDealerClass: state.btnDealerClass,
+      btnHitClass: state.btnHitClass,
+      btnStandClass: state.btnStandClass,
+      message: state.message
     };
     this.setItem(this.KEY, JSON.stringify(jsonSate));
   }
