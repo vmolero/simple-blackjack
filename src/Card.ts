@@ -1,10 +1,6 @@
 import Suit from './Suit';
 import Serializable from './interfaces/Serializable';
-
-export interface CardJsonInterface {
-    rank: number;
-    suit: number;
-}
+import CardJsonInterface from './interfaces/CardJsonInterface';
 
 export default class Card implements Serializable {
     readonly MIN_RANK = 1;
